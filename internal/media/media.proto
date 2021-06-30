@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+//import "google/protobuf/duration.proto";
+
+package media;
+
+//option go_package = ".;media";
+option go_package = "behnama/stream/internal/messages/media";
+
+enum PacketType{
+    PacketVideo = 0;
+    PacketAudio = 1;
+    PacketMetaDataOnvif = 2;
+    PacketMetaDataAnalyzer = 3;
+    PacketEOF = 4;
+    PacketStop = 5;
+    PacketWebRTC = 6;
+}
+
+message Event {
+    repeated PacketLocation multiple_packets = 3;
+}
+
+message PacketLocation{
+    int64 blocIndex = 1;
+    int32 restartIndex = 2;
+    int64 time = 3;
+    PacketType frameType = 4;
+}
+
+message Packet {
+    PacketType PacketType = 1;
+    bytes Data = 2;
+    int64 compositionTime = 3;
+    uint32 TimeSample = 4;
+    bool IsKeyFrame = 5;
+    uint32 crc = 6;
+    int64 time = 7;
+    uint32 index = 8;
+}
+
+message PacketChunk {
+    uint32 index = 1;
+    int64 startTime = 3;
+    int64 endTime = 4;
+    uint32 packetCount = 5;
+    repeated Packet packets = 6;
+}
