@@ -4,8 +4,8 @@ syntax = "proto3";
 
 package media;
 
-//option go_package = ".;media";
-option go_package = "behnama/stream/internal/messages/media";
+option go_package = ".;media";
+//option go_package = "behnama/stream/internal/messages/media";
 
 enum PacketType{
     PacketVideo = 0;

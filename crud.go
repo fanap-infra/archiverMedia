@@ -1,8 +1,8 @@
-package ArchiverEngine
+package archiverMedia
 
 import (
-	"ArchiverEngine/internal/virtualMedia"
 	"fmt"
+	"github.com/fanap-infra/archiverMedia/internal/virtualMedia"
 )
 
 // Create new virtual file and add opened files

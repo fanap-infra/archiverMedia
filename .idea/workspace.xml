@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9213f1ba-fce2-4e4b-b001-16ed9fc9f928" name="Default Changelist" comment="" />
+    <list default="true" id="9213f1ba-fce2-4e4b-b001-16ed9fc9f928" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/virtualMedia/constant.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/virtualMedia/frame.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/IO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crud.go" beforeDir="false" afterPath="$PROJECT_DIR$/crud.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/events.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/archiver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/media/media.proto" beforeDir="false" afterPath="$PROJECT_DIR$/internal/media/media.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/virtualMedia/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/virtualMedia/IO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/virtualMedia/virtualMedia.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/virtualMedia/virtualMedia.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/provider.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
   <component name="GOROOT" path="/usr/lib/go-1.16" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
@@ -18,12 +42,19 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -31,5 +62,11 @@
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
     <proxy>direct</proxy>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="449" y="175" width="1022" height="737" key="SettingsEditor" timestamp="1625665986458">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="449" y="175" width="1022" height="737" key="SettingsEditor/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1625665986458" />
   </component>
 </project>
