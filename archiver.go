@@ -6,7 +6,8 @@ import (
 )
 
 type Archiver struct {
-	log                *log.Logger
-	EventsHandler      Events
-	fs 	*fsEngine.FSEngine
+	log           *log.Logger
+	EventsHandler Events
+	fs            *fsEngine.FSEngine
+	blockSize     uint32
 }

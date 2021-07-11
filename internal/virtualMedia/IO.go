@@ -2,17 +2,81 @@ package virtualMedia
 
 import "github.com/fanap-infra/archiverMedia/internal/media"
 
-func (vm *VirtualMedia) WriteFrame(frame *media.Packet) {
+func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 	if vm.readOnly {
-		return 0, ErrFileIsReadOnly
+		return ErrFileIsReadOnly
 	}
+	vm.fwMUX.Lock()
+	defer vm.fwMUX.Unlock()
+	if vm.frameChunk.Packets == nil {
+		vm.log.Warnv("frame chunk is nil", "name", vm.name)
+		vm.frameChunk.Packets = []*media.Packet{}
+	}
+
+	if frame.PacketType == media.PacketType_PacketVideo && frame.IsKeyFrame {
+		if len(vm.frameChunk.Packets) >= FrameChunkMinimumFrameCount {
+			b, err := generateFrameChunk(vm.frameChunk)
+			if err != nil {
+				return err
+			}
+			l, err := vm.vFile.Write(b)
+			vm.fileSize += uint32(l)
+			if err != nil {
+				return err
+			}
+			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
+
+		}
+	}
+
+	vm.frameChunk.Packets = append(vm.frameChunk.Packets, frame)
+	if frame.PacketType == media.PacketType_PacketVideo {
+		if vm.frameChunk.StartTime == 0 {
+			vm.frameChunk.StartTime = frame.Time
+		}
+		vm.frameChunk.EndTime = frame.Time
+	}
+	return nil
 }
 
-func (vm *VirtualMedia) ReadFrame() *media.Packet {
+func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
+	vm.rxMUX.Lock()
+	defer vm.rxMUX.Unlock()
+	if vm.frameChunk == nil || int(vm.currentFrameInChunk) >= len(vm.frameChunk.Packets) {
+		fc, err := vm.FrameChunk()
+		if err != nil {
+			return nil, err
+		}
+		vm.frameChunk = fc
+		vm.currentFrameInChunk = 0
+	} else if uint32(len(vm.frameChunk.Packets)) <= (vm.currentFrameInChunk) {
+		fc, err := vm.FrameChunk()
+		if err != nil {
+			return nil, err
+		}
+		vm.frameChunk = fc
+		vm.currentFrameInChunk = 0
+	}
+	vm.currentFrameInChunk++
+	return vm.frameChunk.Packets[vm.currentFrameInChunk-1], nil
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
+	// vm.vFile.
 }
 
 func (vm *VirtualMedia) Close() error {
+	vm.fwMUX.Lock()
+	defer vm.fwMUX.Unlock()
+	vm.rxMUX.Lock()
+	defer vm.rxMUX.Unlock()
+
+	err := vm.vFile.Close()
+	if err != nil {
+		vm.log.Errorv("virtual media can not close", "err", err.Error())
+	}
+	vm.vfBuf = vm.vfBuf[:0]
+	vm.frameChunkRX = nil
+	vm.frameChunk = nil
+	return err
 }
