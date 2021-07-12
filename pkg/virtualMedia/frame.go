@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/fanap-infra/archiverMedia/internal/media"
+	"github.com/fanap-infra/archiverMedia/pkg/media"
 	"google.golang.org/protobuf/proto"
 )
 

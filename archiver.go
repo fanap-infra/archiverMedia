@@ -3,7 +3,7 @@ package archiverMedia
 import (
 	"sync"
 
-	"github.com/fanap-infra/archiverMedia/internal/virtualMedia"
+	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
 
 	"github.com/fanap-infra/fsEngine"
 	"github.com/fanap-infra/log"

@@ -1,6 +1,6 @@
 package virtualMedia
 
-import "github.com/fanap-infra/archiverMedia/internal/media"
+import "github.com/fanap-infra/archiverMedia/pkg/media"
 
 func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 	if vm.readOnly {

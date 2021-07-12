@@ -3,6 +3,8 @@ package archiverMedia
 import (
 	"fmt"
 
+	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
+
 	"github.com/fanap-infra/fsEngine"
 	"github.com/fanap-infra/log"
 )
@@ -26,7 +28,10 @@ func (p *Provider) CreateFileSystem(path string, size int64, blockSize uint32, e
 		return nil, fmt.Errorf("archiver created before")
 	}
 
-	arch := &Archiver{log: log, EventsHandler: eventsHandler, blockSize: blockSize}
+	arch := &Archiver{
+		log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32]*virtualMedia.VirtualMedia),
+		blockSize: blockSize,
+	}
 	fs, err := fsEngine.CreateFileSystem(path, size, blockSize, arch, log)
 	if err != nil {
 		return nil, err
@@ -42,7 +47,7 @@ func (p *Provider) ParseFileSystem(path string, eventsHandler Events, log *log.L
 		return arch, nil
 	}
 
-	arch = &Archiver{log: log, EventsHandler: eventsHandler}
+	arch = &Archiver{log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32]*virtualMedia.VirtualMedia)}
 	fs, err := fsEngine.ParseFileSystem(path, arch, log)
 	if err != nil {
 		return nil, err
