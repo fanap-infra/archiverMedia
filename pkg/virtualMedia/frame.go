@@ -3,6 +3,7 @@ package virtualMedia
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 
 	"github.com/fanap-infra/archiverMedia/internal/media"
 	"google.golang.org/protobuf/proto"
@@ -20,7 +21,7 @@ func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 	return b, nil
 }
 
-func (vm *VirtualMedia) FrameChunk() (*media.PacketChunk, error) {
+func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 	tmpBuf := make([]byte, vm.blockSize)
 	frameChunkDataSize := uint32(0)
 	nextFrameChunk := -1
@@ -56,4 +57,18 @@ func (vm *VirtualMedia) FrameChunk() (*media.PacketChunk, error) {
 		}
 		vm.vfBuf = append(vm.vfBuf, tmpBuf[:n]...)
 	}
+}
+
+func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
+	if vm.frameChunkRX != nil {
+		if vm.frameChunkRX.Index == 1 {
+			return nil, fmt.Errorf("there is no previous frame chunk")
+		}
+	} else {
+		// ToDo:change seek pointer
+		return vm.NextFrameChunk()
+	}
+	// ToDo:change seek pointer
+
+	return nil, nil
 }

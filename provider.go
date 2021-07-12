@@ -19,34 +19,35 @@ func NewProvider() *Provider {
 	}
 }
 
-func (p *Provider) CreateFileSystem(path string, size int64, blockSize uint32, eventsHandler fsEngine.Events,
+func (p *Provider) CreateFileSystem(path string, size int64, blockSize uint32, eventsHandler Events,
 	log *log.Logger) (*Archiver, error) {
 	_, ok := p.openedArchiver[path]
 	if ok {
 		return nil, fmt.Errorf("archiver created before")
 	}
-	fs, err := fsEngine.CreateFileSystem(path, size, blockSize, log)
+
+	arch := &Archiver{log: log, EventsHandler: eventsHandler, blockSize: blockSize}
+	fs, err := fsEngine.CreateFileSystem(path, size, blockSize, arch, log)
 	if err != nil {
 		return nil, err
 	}
-
-	arch := &Archiver{log: log, fs: fs, EventsHandler: eventsHandler, blockSize: blockSize}
+	arch.fs = fs
 	p.openedArchiver[path] = arch
 	return arch, nil
 }
 
-func (p *Provider) ParseFileSystem(path string, eventsHandler fsEngine.Events, log *log.Logger) (*Archiver, error) {
+func (p *Provider) ParseFileSystem(path string, eventsHandler Events, log *log.Logger) (*Archiver, error) {
 	arch, ok := p.openedArchiver[path]
 	if ok {
 		return arch, nil
 	}
 
-	fs, err := fsEngine.ParseFileSystem(path, log)
+	arch = &Archiver{log: log, EventsHandler: eventsHandler}
+	fs, err := fsEngine.ParseFileSystem(path, arch, log)
 	if err != nil {
 		return nil, err
 	}
-
-	arch = &Archiver{log: log, fs: fs, EventsHandler: eventsHandler}
+	arch.fs = fs
 	p.openedArchiver[path] = arch
 	return arch, nil
 }

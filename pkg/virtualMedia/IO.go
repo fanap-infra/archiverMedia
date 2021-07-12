@@ -25,7 +25,6 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 				return err
 			}
 			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
-
 		}
 	}
 
@@ -43,14 +42,14 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 	vm.rxMUX.Lock()
 	defer vm.rxMUX.Unlock()
 	if vm.frameChunk == nil || int(vm.currentFrameInChunk) >= len(vm.frameChunk.Packets) {
-		fc, err := vm.FrameChunk()
+		fc, err := vm.NextFrameChunk()
 		if err != nil {
 			return nil, err
 		}
 		vm.frameChunk = fc
 		vm.currentFrameInChunk = 0
 	} else if uint32(len(vm.frameChunk.Packets)) <= (vm.currentFrameInChunk) {
-		fc, err := vm.FrameChunk()
+		fc, err := vm.NextFrameChunk()
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +61,7 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
-	// vm.vFile.
+	return 0, nil // vm.vFile.
 }
 
 func (vm *VirtualMedia) Close() error {

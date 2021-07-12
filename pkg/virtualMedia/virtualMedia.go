@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/fanap-infra/archiverMedia/internal/media"
-	"github.com/fanap-infra/fsEngine/internal/virtualFile"
+	"github.com/fanap-infra/fsEngine/pkg/virtualFile"
 	"github.com/fanap-infra/log"
 )
 
@@ -21,4 +21,5 @@ type VirtualMedia struct {
 	name                string
 	fileSize            uint32
 	blockSize           uint32
+	fileID              uint32
 }

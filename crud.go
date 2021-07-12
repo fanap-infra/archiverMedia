@@ -2,62 +2,54 @@ package archiverMedia
 
 import (
 	"fmt"
+
 	"github.com/fanap-infra/archiverMedia/internal/virtualMedia"
 )
 
 // Create new virtual file and add opened files
-func (arch *Archiver) NewVirtualFile(id uint32, fileName string) (*virtualMedia.VirtualMedia, error) {
-	fse.crudMutex.Lock()
-	defer fse.crudMutex.Unlock()
-	if fse.header.CheckIDExist(id) {
-		return nil, fmt.Errorf("this ID: %v, had been taken", id)
-	}
-	blm := blockAllocationMap.New(fse.log, fse, fse.maxNumberOfBlocks)
-
-	vf := virtualFile.NewVirtualFile(fileName, id, fse.blockSize-BlockHeaderSize, fse, blm,
-		int(fse.blockSize-BlockHeaderSize)*VirtualFileBufferBlockNumber, fse.log)
-	err := fse.header.AddVirtualFile(id, fileName)
+func (arch *Archiver) NewVirtualMediaFile(id uint32, fileName string) (*virtualMedia.VirtualMedia, error) {
+	arch.crudMutex.Lock()
+	defer arch.crudMutex.Unlock()
+	vf, err := arch.fs.NewVirtualFile(id, fileName)
 	if err != nil {
 		return nil, err
 	}
-	fse.openFiles[id] = vf
-	return vf, nil
+	vm := virtualMedia.NewVirtualMedia(fileName, id, arch.blockSize, vf, arch.log)
+	arch.openFiles[id] = vm
+	return vm, nil
 }
 
 func (arch *Archiver) OpenVirtualFile(id uint32) (*virtualMedia.VirtualMedia, error) {
-	fse.crudMutex.Lock()
-	defer fse.crudMutex.Unlock()
-	_, ok := fse.openFiles[id]
+	arch.crudMutex.Lock()
+	defer arch.crudMutex.Unlock()
+	_, ok := arch.openFiles[id]
 	if ok {
 		return nil, fmt.Errorf("this ID: %v is opened before", id)
 	}
-	fileInfo, err := fse.header.GetFileData(id)
+	vf, err := arch.fs.OpenVirtualFile(id)
 	if err != nil {
 		return nil, err
 	}
-	blm, err := blockAllocationMap.Open(fse.log, fse, fse.maxNumberOfBlocks, fileInfo.GetLastBlock(),
-		fileInfo.GetRMapBlocks())
-	if err != nil {
-		return nil, err
-	}
-	vf := virtualFile.OpenVirtualFile(fileInfo, fse.blockSize-BlockHeaderSize, fse, blm,
-		int(fse.blockSize-BlockHeaderSize)*VirtualFileBufferBlockNumber, fse.log)
-	//err = fse.header.AddVirtualFile(id, fileInfo.GetName())
-	//if err != nil {
-	//	return nil, err
-	//}
-	return vf, nil
+	// ToDO: get file name from virtual file
+	vm := virtualMedia.OpenVirtualMedia("fileName", id, arch.blockSize, vf, arch.log)
+	return vm, nil
 }
 
 func (arch *Archiver) RemoveVirtualFile(id uint32) error {
-	fse.crudMutex.Lock()
-	defer fse.crudMutex.Unlock()
-	_, ok := fse.openFiles[id]
+	arch.crudMutex.Lock()
+	defer arch.crudMutex.Unlock()
+	_, ok := arch.openFiles[id]
 	if ok {
-		return fmt.Errorf("virtual file id : %d is opened", id)
+		return fmt.Errorf("virtual media id : %d is opened", id)
+	}
+	err := arch.fs.RemoveVirtualFile(id)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-
-
+func (arch *Archiver) VirtualFileDeleted(fileID uint32, message string) {
+	arch.log.Warnv("Media file deleted", "fileID", fileID, "message", message)
+	arch.EventsHandler.DeleteFile(fileID)
+}
