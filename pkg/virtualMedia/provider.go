@@ -5,7 +5,7 @@ import (
 	"github.com/fanap-infra/log"
 )
 
-func OpenVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *virtualFile.VirtualFile,
+func OpenVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *virtualFile.VirtualFile, archiver Arch,
 	log *log.Logger) *VirtualMedia {
 	return &VirtualMedia{
 		vfBuf:     make([]byte, 0),
@@ -14,10 +14,11 @@ func OpenVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *v
 		fileID:    fileID,
 		blockSize: blockSize,
 		log:       log,
+		archiver:  archiver,
 	}
 }
 
-func NewVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *virtualFile.VirtualFile,
+func NewVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *virtualFile.VirtualFile, archiver Arch,
 	log *log.Logger) *VirtualMedia {
 	return &VirtualMedia{
 		vfBuf:     make([]byte, 0),
@@ -26,5 +27,6 @@ func NewVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *vi
 		fileID:    fileID,
 		blockSize: blockSize,
 		log:       log,
+		archiver:  archiver,
 	}
 }

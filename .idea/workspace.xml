@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9213f1ba-fce2-4e4b-b001-16ed9fc9f928" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/crud_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/IO.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/archiver.go" beforeDir="false" afterPath="$PROJECT_DIR$/archiver.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crud.go" beforeDir="false" afterPath="$PROJECT_DIR$/crud.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/IO.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/frame.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/frame.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/provider.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/virtualMedia.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/virtualMedia.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/provider.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +66,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestVirtualMedia_Open in github.com/fanap-infra/archiverMedia">
+  <component name="RunManager" selected="Go Test.TestParseFS in github.com/fanap-infra/archiverMedia">
     <configuration name="TestCreateFS in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$" />
@@ -116,10 +113,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestParseFS in github.com/fanap-infra/archiverMedia" />
+        <item itemvalue="Go Test.TestCreateFS in github.com/fanap-infra/archiverMedia" />
         <item itemvalue="Go Test.TestVirtualMedia_Open in github.com/fanap-infra/archiverMedia" />
         <item itemvalue="Go Test.TestVirtualMedia_Remove in github.com/fanap-infra/archiverMedia" />
-        <item itemvalue="Go Test.TestCreateFS in github.com/fanap-infra/archiverMedia" />
-        <item itemvalue="Go Test.TestParseFS in github.com/fanap-infra/archiverMedia" />
       </list>
     </recent_temporary>
   </component>
@@ -131,22 +128,22 @@
     <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1874" height="284" key="GridCell.Tab.0.bottom" timestamp="1626065646838">
+    <state width="1874" height="284" key="GridCell.Tab.0.bottom" timestamp="1626066364482">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626065646838" />
-    <state width="1874" height="284" key="GridCell.Tab.0.center" timestamp="1626065646838">
+    <state width="1874" height="284" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
+    <state width="1874" height="284" key="GridCell.Tab.0.center" timestamp="1626066364482">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.center/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626065646838" />
-    <state width="1874" height="284" key="GridCell.Tab.0.left" timestamp="1626065646838">
+    <state width="1874" height="284" key="GridCell.Tab.0.center/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
+    <state width="1874" height="284" key="GridCell.Tab.0.left" timestamp="1626066364482">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.left/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626065646838" />
-    <state width="1874" height="284" key="GridCell.Tab.0.right" timestamp="1626065646838">
+    <state width="1874" height="284" key="GridCell.Tab.0.left/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
+    <state width="1874" height="284" key="GridCell.Tab.0.right" timestamp="1626066364482">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.right/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626065646838" />
+    <state width="1874" height="284" key="GridCell.Tab.0.right/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
     <state x="449" y="175" width="1022" height="737" key="SettingsEditor" timestamp="1626061855759">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

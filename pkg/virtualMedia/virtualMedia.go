@@ -22,4 +22,5 @@ type VirtualMedia struct {
 	fileSize            uint32
 	blockSize           uint32
 	fileID              uint32
+	archiver            Arch
 }

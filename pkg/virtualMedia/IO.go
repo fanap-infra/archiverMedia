@@ -77,5 +77,5 @@ func (vm *VirtualMedia) Close() error {
 	vm.vfBuf = vm.vfBuf[:0]
 	vm.frameChunkRX = nil
 	vm.frameChunk = nil
-	return err
+	return vm.archiver.Closed(vm.fileID)
 }

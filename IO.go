@@ -20,3 +20,12 @@ func (arch *Archiver) Close() error {
 
 	return nil
 }
+
+func (arch *Archiver) Closed(fileID uint32) error {
+	arch.crudMutex.Lock()
+	defer arch.crudMutex.Unlock()
+
+	delete(arch.openFiles, fileID)
+
+	return nil
+}

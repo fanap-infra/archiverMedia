@@ -14,7 +14,7 @@ func (arch *Archiver) NewVirtualMediaFile(id uint32, fileName string) (*virtualM
 	if err != nil {
 		return nil, err
 	}
-	vm := virtualMedia.NewVirtualMedia(fileName, id, arch.blockSize, vf, arch.log)
+	vm := virtualMedia.NewVirtualMedia(fileName, id, arch.blockSize, vf, arch, arch.log)
 	arch.openFiles[id] = vm
 	return vm, nil
 }
@@ -31,7 +31,7 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 		return nil, err
 	}
 	// ToDO: get file name from virtual file
-	vm := virtualMedia.OpenVirtualMedia("fileName", id, arch.blockSize, vf, arch.log)
+	vm := virtualMedia.OpenVirtualMedia("fileName", id, arch.blockSize, vf, arch, arch.log)
 	return vm, nil
 }
 
