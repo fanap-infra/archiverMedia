@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9213f1ba-fce2-4e4b-b001-16ed9fc9f928" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/IO_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/virtualMedia/IO_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/virtualMedia/frame_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/IO.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crud.go" beforeDir="false" afterPath="$PROJECT_DIR$/crud.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/IO.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/IO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/frame.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/frame.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/provider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/virtualMedia/virtualMedia.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/virtualMedia/virtualMedia.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +67,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestParseFS in github.com/fanap-infra/archiverMedia">
+  <component name="RunManager" selected="Go Test.TestIO_WR in github.com/fanap-infra/archiverMedia/pkg/virtualMedia">
     <configuration name="TestCreateFS in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$" />
@@ -76,6 +77,39 @@
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
       <pattern value="^TestCreateFS$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestFrame_Generation in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="ArchiverMedia" />
+      <working_directory value="$PROJECT_DIR$/pkg/virtualMedia" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestFrame_Generation$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestIO_OneVirtualMediaFile in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="ArchiverMedia" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/fanap-infra/archiverMedia" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestIO_OneVirtualMediaFile$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestIO_WR in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="ArchiverMedia" />
+      <working_directory value="$PROJECT_DIR$/pkg/virtualMedia" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestIO_WR$" />
       <method v="2" />
     </configuration>
     <configuration name="TestParseFS in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -89,34 +123,13 @@
       <pattern value="^TestParseFS$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestVirtualMedia_Open in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="ArchiverMedia" />
-      <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/fanap-infra/archiverMedia" />
-      <directory value="$PROJECT_DIR$/" />
-      <filePath value="$PROJECT_DIR$/" />
-      <pattern value="^TestVirtualMedia_Open$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestVirtualMedia_Remove in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="ArchiverMedia" />
-      <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/fanap-infra/archiverMedia" />
-      <directory value="$PROJECT_DIR$/" />
-      <filePath value="$PROJECT_DIR$/" />
-      <pattern value="^TestVirtualMedia_Remove$" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestIO_WR in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
+        <item itemvalue="Go Test.TestFrame_Generation in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
+        <item itemvalue="Go Test.TestIO_OneVirtualMediaFile in github.com/fanap-infra/archiverMedia" />
         <item itemvalue="Go Test.TestParseFS in github.com/fanap-infra/archiverMedia" />
         <item itemvalue="Go Test.TestCreateFS in github.com/fanap-infra/archiverMedia" />
-        <item itemvalue="Go Test.TestVirtualMedia_Open in github.com/fanap-infra/archiverMedia" />
-        <item itemvalue="Go Test.TestVirtualMedia_Remove in github.com/fanap-infra/archiverMedia" />
       </list>
     </recent_temporary>
   </component>
@@ -128,22 +141,42 @@
     <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1874" height="284" key="GridCell.Tab.0.bottom" timestamp="1626066364482">
+    <state x="100" y="100" width="1720" height="880" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1626070564641">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
-    <state width="1874" height="284" key="GridCell.Tab.0.center" timestamp="1626066364482">
+    <state x="100" y="100" width="1720" height="880" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626070564641" />
+    <state width="1874" height="284" key="GridCell.Tab.0.bottom" timestamp="1626170961189">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.center/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
-    <state width="1874" height="284" key="GridCell.Tab.0.left" timestamp="1626066364482">
+    <state width="1874" height="284" key="GridCell.Tab.0.bottom/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626170961189" />
+    <state width="1874" height="284" key="GridCell.Tab.0.center" timestamp="1626170961189">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.left/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
-    <state width="1874" height="284" key="GridCell.Tab.0.right" timestamp="1626066364482">
+    <state width="1874" height="284" key="GridCell.Tab.0.center/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626170961189" />
+    <state width="1874" height="284" key="GridCell.Tab.0.left" timestamp="1626170961189">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1874" height="284" key="GridCell.Tab.0.right/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626066364482" />
+    <state width="1874" height="284" key="GridCell.Tab.0.left/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626170961189" />
+    <state width="1874" height="284" key="GridCell.Tab.0.right" timestamp="1626170961189">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1874" height="284" key="GridCell.Tab.0.right/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626170961189" />
+    <state width="1874" height="255" key="GridCell.Tab.1.bottom" timestamp="1626169083183">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1874" height="255" key="GridCell.Tab.1.bottom/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626169083183" />
+    <state width="1874" height="255" key="GridCell.Tab.1.center" timestamp="1626169083183">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1874" height="255" key="GridCell.Tab.1.center/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626169083183" />
+    <state width="1874" height="255" key="GridCell.Tab.1.left" timestamp="1626169083183">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1874" height="255" key="GridCell.Tab.1.left/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626169083183" />
+    <state width="1874" height="255" key="GridCell.Tab.1.right" timestamp="1626169083183">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1874" height="255" key="GridCell.Tab.1.right/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626169083183" />
     <state x="449" y="175" width="1022" height="737" key="SettingsEditor" timestamp="1626061855759">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -152,5 +185,26 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="608" y="251" width="704" height="578" key="find.popup/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1626004113762" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/pkg/virtualMedia/frame.go</url>
+          <line>55</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/IO_test.go</url>
+          <line>61</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/pkg/virtualMedia/IO_test.go</url>
+          <line>99</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

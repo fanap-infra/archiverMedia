@@ -15,7 +15,7 @@ func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 		return nil, err
 	}
 	binSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(binSize, uint32(len(b)+4))
+	binary.BigEndian.PutUint32(binSize, uint32(len(b)))
 	b = append(binSize, b...)
 	b = append([]byte(FrameChunkIdentifier), b...)
 	return b, nil
