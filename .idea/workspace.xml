@@ -71,55 +71,55 @@
     <configuration name="TestCreateFS in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/fanap-infra/archiverMedia" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
       <pattern value="^TestCreateFS$" />
       <method v="2" />
     </configuration>
     <configuration name="TestFrame_Generation in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$/pkg/virtualMedia" />
-      <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
       <pattern value="^TestFrame_Generation$" />
       <method v="2" />
     </configuration>
     <configuration name="TestIO_OneVirtualMediaFile in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/fanap-infra/archiverMedia" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
       <pattern value="^TestIO_OneVirtualMediaFile$" />
       <method v="2" />
     </configuration>
     <configuration name="TestIO_WR in github.com/fanap-infra/archiverMedia/pkg/virtualMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$/pkg/virtualMedia" />
-      <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/fanap-infra/archiverMedia/pkg/virtualMedia" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
       <pattern value="^TestIO_WR$" />
       <method v="2" />
     </configuration>
     <configuration name="TestParseFS in github.com/fanap-infra/archiverMedia" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="ArchiverMedia" />
       <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/fanap-infra/archiverMedia" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
+      <framework value="gotest" />
       <pattern value="^TestParseFS$" />
       <method v="2" />
     </configuration>
@@ -132,6 +132,10 @@
         <item itemvalue="Go Test.TestCreateFS in github.com/fanap-infra/archiverMedia" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="Talios.JiraConfigurationComponent" enableIssueTracking="false" autoRefresh="false" useExternalBrowser="false" refreshTimeout="0" annotateissues="false">
+    <servers />
+    <columns />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
