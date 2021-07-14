@@ -46,7 +46,7 @@ func NewVBufMock(t *testing.T, path string) (*ArchMock, error) {
 		tst:       t,
 		log:       log.GetScope("test"),
 	}
-	arch.log.Infov("create archiver ", "path", path)
+	// arch.log.Infov("create archiver ", "path", path)
 	fs, err := fsEngine.CreateFileSystem(path, fileSizeTest, blockSizeTest, arch, arch.log)
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func TestIO_WR(t *testing.T) {
 	var packets []*media.Packet
 
 	size := 0
-	VFSize := int(1.5 * blockSizeTest)
-	MaxByteArraySize := int(blockSizeTest * 0.5)
+	VFSize := int(3.5 * blockSizeTest)
+	MaxByteArraySize := int(blockSizeTest * 0.1)
 
 	for {
 		token := make([]byte, uint32(rand.Intn(MaxByteArraySize)))
