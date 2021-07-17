@@ -24,9 +24,9 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 			if err != nil {
 				return err
 			}
-			vm.log.Infov("packet chunk is written", "Index", vm.frameChunk.Index,
-				"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
-			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
+			// vm.log.Infov("packet chunk is written", "Index", vm.frameChunk.Index,
+			//	"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
+			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1, Packets: []*media.Packet{}}
 		}
 	}
 
@@ -82,8 +82,8 @@ func (vm *VirtualMedia) Close() error {
 		if err != nil {
 			return err
 		}
-		vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
-			"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
+		// vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
+		//	"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
 		vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
 	}
 

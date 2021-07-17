@@ -29,11 +29,12 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 		if frameChunkDataSize != 0 && nextFrameChunk != -1 {
 			if uint32(len(vm.vfBuf[nextFrameChunk+FrameChunkHeader:])) >= frameChunkDataSize {
 				fc := &media.PacketChunk{}
-				err := proto.Unmarshal(vm.vfBuf[nextFrameChunk+FrameChunkHeader:nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize], fc)
+				err := proto.Unmarshal(vm.vfBuf[nextFrameChunk+FrameChunkHeader:nextFrameChunk+FrameChunkHeader+int(frameChunkDataSize)], fc)
 				if err != nil {
-					vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
 					vm.log.Errorv("FrameChunk proto.Unmarshal", "err", err.Error(),
 						"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize)
+					vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
+
 					return nil, err
 				}
 				vm.frameChunkRX = fc

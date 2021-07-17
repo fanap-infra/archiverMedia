@@ -32,6 +32,7 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 	}
 	// ToDO: get file name from virtual file
 	vm := virtualMedia.OpenVirtualMedia("fileName", id, arch.blockSize, vf, arch, arch.log)
+	arch.openFiles[id] = vm
 	return vm, nil
 }
 
@@ -47,9 +48,4 @@ func (arch *Archiver) RemoveVirtualMediaFile(id uint32) error {
 		return err
 	}
 	return nil
-}
-
-func (arch *Archiver) VirtualFileDeleted(fileID uint32, message string) {
-	arch.log.Warnv("Media file deleted", "fileID", fileID, "message", message)
-	arch.EventsHandler.DeleteFile(fileID)
 }
