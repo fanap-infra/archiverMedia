@@ -17,3 +17,9 @@ type Archiver struct {
 	crudMutex     sync.Mutex
 	openFiles     map[uint32]*virtualMedia.VirtualMedia
 }
+
+func (arch *Archiver) GetPath() string {
+	// ToDo:: add get file path
+	// return arch.fs
+	return ""
+}
