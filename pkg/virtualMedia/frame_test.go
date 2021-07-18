@@ -11,8 +11,8 @@ import (
 )
 
 func TestFrame_Generation(t *testing.T) {
-	fc_Index := uint32(5)
-	pkt := &media.PacketChunk{Index: fc_Index}
+	fcIndex := uint32(5)
+	pkt := &media.PacketChunk{Index: fcIndex}
 	data, err := generateFrameChunk(pkt)
 	assert.Equal(t, nil, err)
 	fc := &media.PacketChunk{}
@@ -20,5 +20,5 @@ func TestFrame_Generation(t *testing.T) {
 		data[FrameChunkIdentifierSize:FrameChunkHeader])
 	err = proto.Unmarshal(data[FrameChunkHeader:FrameChunkHeader+frameChunkDataSize], fc)
 	assert.Equal(t, nil, err)
-	assert.Equal(t, fc_Index, fc.Index)
+	assert.Equal(t, fcIndex, fc.Index)
 }

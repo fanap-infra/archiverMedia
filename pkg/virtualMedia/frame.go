@@ -66,10 +66,33 @@ func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
 			return nil, fmt.Errorf("there is no previous frame chunk")
 		}
 	} else {
-		// ToDo:change seek pointer
 		return vm.NextFrameChunk()
 	}
-	// ToDo:change seek pointer
+	currentFrameChunkIndex := vm.frameChunkRX.Index
+	seekPointer := vm.vFile.GetSeek() - int(vm.blockSize*2)
+	if seekPointer <= 0 {
+		return vm.NextFrameChunk()
+	}
+	tmpBuf := make([]byte, 2*vm.blockSize)
+	vm.vfBuf = vm.vfBuf[:0]
+	for {
+		n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
+		if n == 0 {
+			return nil, err
+		}
+		vm.vfBuf = append(tmpBuf[:n], vm.vfBuf...)
+		fc, err := vm.NextFrameChunk()
+		if err != nil {
+			return nil, err
+		}
+		if fc.Index+1 == currentFrameChunkIndex {
+			return fc, nil
+		} else if fc.Index > currentFrameChunkIndex {
+			seekPointer = seekPointer - int(vm.blockSize*2)
+		} else {
+			return vm.NextFrameChunk()
+		}
+	}
 
-	return nil, nil
+	// return nil, nil
 }

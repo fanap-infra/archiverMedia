@@ -5,6 +5,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/fanap-infra/archiverMedia/pkg/vInfo"
+
 	"github.com/fanap-infra/archiverMedia/pkg/media"
 	"github.com/fanap-infra/archiverMedia/pkg/utils"
 	"github.com/fanap-infra/fsEngine"
@@ -90,8 +92,8 @@ func TestIO_WR(t *testing.T) {
 
 	err = vm.Close()
 	assert.Equal(t, nil, err)
-
-	vm2 := OpenVirtualMedia("test", vfID, blockSizeTest, vf, archMock, log.GetScope("test2"))
+	vfInfo := &vInfo.Info{}
+	vm2 := OpenVirtualMedia("test", vfID, blockSizeTest, vf, archMock, vfInfo, log.GetScope("test2"))
 
 	for i, packet := range packets {
 		pkt, err := vm2.ReadFrame()

@@ -19,7 +19,5 @@ type Archiver struct {
 }
 
 func (arch *Archiver) GetPath() string {
-	// ToDo:: add get file path
-	// return arch.fs
-	return ""
+	return arch.fs.GetFilePath()
 }
