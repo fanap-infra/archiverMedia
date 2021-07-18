@@ -59,6 +59,7 @@ func (p *Provider) ParseFileSystem(path string, eventsHandler Events, log *log.L
 		return nil, err
 	}
 	arch.fs = fs
+	arch.blockSize = fs.GetBlockSize()
 	p.openedArchiver[path] = arch
 	return arch, nil
 }
