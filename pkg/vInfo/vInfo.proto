@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+//import "google/protobuf/duration.proto";
+
+package media;
+
+option go_package = ".;vInfo";
+
+message Info {
+  int64 startTime = 1;
+  int64 endTime = 2;
+}

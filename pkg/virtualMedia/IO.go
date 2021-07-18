@@ -1,6 +1,9 @@
 package virtualMedia
 
-import "github.com/fanap-infra/archiverMedia/pkg/media"
+import (
+	"github.com/fanap-infra/archiverMedia/pkg/media"
+	"google.golang.org/protobuf/proto"
+)
 
 func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 	if vm.readOnly {
@@ -21,6 +24,18 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 			}
 			l, err := vm.vFile.Write(b)
 			vm.fileSize += uint32(l)
+			if err != nil {
+				return err
+			}
+			if vm.frameChunk.Index == 1 {
+				vm.info.StartTime = vm.frameChunk.StartTime
+			}
+			vm.info.EndTime = vm.frameChunk.EndTime
+			bInfo, err := proto.Marshal(vm.info)
+			if err != nil {
+				return err
+			}
+			err = vm.vFile.UpdateFileOptionalData(bInfo)
 			if err != nil {
 				return err
 			}
@@ -63,7 +78,30 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
-	return 0, nil // vm.vFile.
+	if vm.frameChunkRX == nil {
+		_, err := vm.NextFrameChunk()
+		if err != nil {
+			return 0, err
+		}
+	}
+	for {
+		if vm.frameChunkRX.StartTime <= frameTime && vm.frameChunkRX.EndTime >= frameTime {
+			return vm.frameChunkRX.StartTime, nil
+		} else if vm.frameChunkRX.EndTime < frameTime {
+			_, err := vm.NextFrameChunk()
+			if err != nil {
+				return 0, err
+			}
+		} else {
+			_, err := vm.PreviousFrameChunk()
+			if err != nil {
+				return 0, err
+			}
+		}
+	}
+	// approximateByteIndex := (frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime))
+	// vm.vFile.
+	// return 0, nil // vm.vFile.
 }
 
 func (vm *VirtualMedia) Close() error {
@@ -82,6 +120,18 @@ func (vm *VirtualMedia) Close() error {
 		if err != nil {
 			return err
 		}
+		if vm.frameChunk.Index == 1 {
+			vm.info.StartTime = vm.frameChunk.StartTime
+		}
+		vm.info.EndTime = vm.frameChunk.EndTime
+		bInfo, err := proto.Marshal(vm.info)
+		if err != nil {
+			return err
+		}
+		err = vm.vFile.UpdateFileOptionalData(bInfo)
+		if err != nil {
+			return err
+		}
 		// vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
 		//	"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
 		vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
@@ -95,4 +145,46 @@ func (vm *VirtualMedia) Close() error {
 	vm.frameChunkRX = nil
 	vm.frameChunk = nil
 	return vm.archiver.Closed(vm.fileID)
+}
+
+func (vm *VirtualMedia) CloseWithNotifyArchiver() error {
+	vm.fwMUX.Lock()
+	defer vm.fwMUX.Unlock()
+	vm.rxMUX.Lock()
+	defer vm.rxMUX.Unlock()
+
+	if len(vm.frameChunk.Packets) > 0 {
+		b, err := generateFrameChunk(vm.frameChunk)
+		if err != nil {
+			return err
+		}
+		l, err := vm.vFile.Write(b)
+		vm.fileSize += uint32(l)
+		if err != nil {
+			return err
+		}
+		if vm.frameChunk.Index == 1 {
+			vm.info.StartTime = vm.frameChunk.StartTime
+		}
+		vm.info.EndTime = vm.frameChunk.EndTime
+		bInfo, err := proto.Marshal(vm.info)
+		if err != nil {
+			return err
+		}
+		err = vm.vFile.UpdateFileOptionalData(bInfo)
+		if err != nil {
+			return err
+		}
+
+		vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
+	}
+
+	err := vm.vFile.Close()
+	if err != nil {
+		vm.log.Errorv("virtual media can not close", "err", err.Error())
+	}
+	vm.vfBuf = vm.vfBuf[:0]
+	vm.frameChunkRX = nil
+	vm.frameChunk = nil
+	return nil
 }

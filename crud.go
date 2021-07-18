@@ -3,6 +3,8 @@ package archiverMedia
 import (
 	"fmt"
 
+	"github.com/fanap-infra/archiverMedia/pkg/vInfo"
+
 	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
 )
 
@@ -30,8 +32,12 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 	if err != nil {
 		return nil, err
 	}
-	// ToDO: get file name from virtual file
-	vm := virtualMedia.OpenVirtualMedia("fileName", id, arch.blockSize, vf, arch, arch.log)
+
+	info, err := vInfo.Parse(vf.GetOptionalData())
+	if err != nil {
+		return nil, err
+	}
+	vm := virtualMedia.OpenVirtualMedia(vf.GetFileName(), id, arch.blockSize, vf, arch, info, arch.log)
 	arch.openFiles[id] = vm
 	return vm, nil
 }

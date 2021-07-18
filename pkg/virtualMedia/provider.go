@@ -2,12 +2,13 @@ package virtualMedia
 
 import (
 	"github.com/fanap-infra/archiverMedia/pkg/media"
+	"github.com/fanap-infra/archiverMedia/pkg/vInfo"
 	"github.com/fanap-infra/fsEngine/pkg/virtualFile"
 	"github.com/fanap-infra/log"
 )
 
 func OpenVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *virtualFile.VirtualFile, archiver Arch,
-	log *log.Logger) *VirtualMedia {
+	info *vInfo.Info, log *log.Logger) *VirtualMedia {
 	return &VirtualMedia{
 		vfBuf:      make([]byte, 0),
 		frameChunk: &media.PacketChunk{Packets: []*media.Packet{}},
@@ -17,6 +18,7 @@ func OpenVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *v
 		blockSize:  blockSize,
 		log:        log,
 		archiver:   archiver,
+		info:       info,
 	}
 }
 
@@ -24,12 +26,13 @@ func NewVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *vi
 	log *log.Logger) *VirtualMedia {
 	return &VirtualMedia{
 		vfBuf:      make([]byte, 0),
-		frameChunk: &media.PacketChunk{Packets: []*media.Packet{}},
+		frameChunk: &media.PacketChunk{Packets: []*media.Packet{}, Index: 1},
 		vFile:      vFile,
 		name:       fileName,
 		fileID:     fileID,
 		blockSize:  blockSize,
 		log:        log,
 		archiver:   archiver,
+		info:       &vInfo.Info{},
 	}
 }

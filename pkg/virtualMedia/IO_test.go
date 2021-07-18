@@ -5,6 +5,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/fanap-infra/archiverMedia/pkg/vInfo"
+
 	"github.com/fanap-infra/archiverMedia/pkg/media"
 	"github.com/fanap-infra/archiverMedia/pkg/utils"
 	"github.com/fanap-infra/fsEngine"
@@ -16,8 +18,8 @@ const (
 	blockSizeTest = 5120
 	vfID          = 1
 
-	fsPathTest     = "/fsTest.beh"
-	headerPathTest = "/Header.Beh"
+	fsPath               = "fs.beh"
+	headerPath           = "Header.Beh"
 	fileSizeTest   = blockSizeTest * 128
 )
 
@@ -58,10 +60,10 @@ func NewVBufMock(t *testing.T, path string) (*ArchMock, error) {
 func TestIO_WR(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + fsPathTest)
-	_ = utils.DeleteFile(homePath + headerPathTest)
+	_ = utils.DeleteFile(homePath +  "/"+fsPath)
+	_ = utils.DeleteFile(homePath + "/"+headerPath)
 
-	archMock, err := NewVBufMock(t, homePath+fsPathTest)
+	archMock, err := NewVBufMock(t, homePath)
 	assert.Equal(t, nil, err)
 	vf, err := archMock.fs.NewVirtualFile(vfID, "test2")
 	assert.Equal(t, nil, err)
@@ -90,8 +92,8 @@ func TestIO_WR(t *testing.T) {
 
 	err = vm.Close()
 	assert.Equal(t, nil, err)
-
-	vm2 := OpenVirtualMedia("test", vfID, blockSizeTest, vf, archMock, log.GetScope("test2"))
+	vfInfo := &vInfo.Info{}
+	vm2 := OpenVirtualMedia("test", vfID, blockSizeTest, vf, archMock, vfInfo, log.GetScope("test2"))
 
 	for i, packet := range packets {
 		pkt, err := vm2.ReadFrame()
@@ -105,6 +107,6 @@ func TestIO_WR(t *testing.T) {
 
 	err = archMock.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + fsPathTest)
-	_ = utils.DeleteFile(homePath + headerPathTest)
+	_ = utils.DeleteFile(homePath +  "/"+fsPath)
+	_ = utils.DeleteFile(homePath +  "/"+headerPath)
 }
