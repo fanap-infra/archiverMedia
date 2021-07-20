@@ -33,7 +33,7 @@ func (p *Provider) CreateFileSystem(path string, size int64, blockSize uint32, e
 	}
 
 	arch := &Archiver{
-		log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32]*virtualMedia.VirtualMedia),
+		log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32][]*virtualMedia.VirtualMedia),
 		blockSize: blockSize,
 	}
 	fs, err := fsEngine.CreateFileSystem(path, size, blockSize, arch, log)
@@ -53,7 +53,7 @@ func (p *Provider) ParseFileSystem(path string, eventsHandler Events, log *log.L
 		return arch, nil
 	}
 
-	arch = &Archiver{log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32]*virtualMedia.VirtualMedia)}
+	arch = &Archiver{log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32][]*virtualMedia.VirtualMedia)}
 	fs, err := fsEngine.ParseFileSystem(path, arch, log)
 	if err != nil {
 		return nil, err

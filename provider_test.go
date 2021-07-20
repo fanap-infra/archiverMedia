@@ -54,7 +54,7 @@ func TestParseFS(t *testing.T) {
 	_, err = provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest,
 		&eventListener, log.GetScope("test"))
 	assert.Equal(t, nil, err)
-	fs, err := provider.ParseFileSystem(homePath+ "/"+fsPath, &eventListener, log.GetScope("test"))
+	fs, err := provider.ParseFileSystem(homePath, &eventListener, log.GetScope("test"))
 	assert.Equal(t, nil, err)
 	assert.Equal(t, fs.blockSize, uint32(blockSizeTest))
 	_ = utils.DeleteFile(homePath +  "/"+fsPath)

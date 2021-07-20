@@ -17,17 +17,17 @@ func (arch *Archiver) NewVirtualMediaFile(id uint32, fileName string) (*virtualM
 		return nil, err
 	}
 	vm := virtualMedia.NewVirtualMedia(fileName, id, arch.blockSize, vf, arch, arch.log)
-	arch.openFiles[id] = vm
+	arch.openFiles[id] = append(arch.openFiles[id], vm)
 	return vm, nil
 }
 
 func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedia, error) {
 	arch.crudMutex.Lock()
 	defer arch.crudMutex.Unlock()
-	_, ok := arch.openFiles[id]
-	if ok {
-		return nil, fmt.Errorf("this ID: %v is opened before", id)
-	}
+	//_, ok := arch.openFiles[id]
+	//if ok {
+	//	return nil, fmt.Errorf("this ID: %v is opened before", id)
+	//}
 	vf, err := arch.fs.OpenVirtualFile(id)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 		return nil, err
 	}
 	vm := virtualMedia.OpenVirtualMedia(vf.GetFileName(), id, arch.blockSize, vf, arch, info, arch.log)
-	arch.openFiles[id] = vm
+	arch.openFiles[id] = append(arch.openFiles[id], vm)
 	return vm, nil
 }
 

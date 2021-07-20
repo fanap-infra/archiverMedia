@@ -5,9 +5,13 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/fanap-infra/archiverMedia/pkg/err"
 	"github.com/fanap-infra/archiverMedia/pkg/media"
+	"github.com/fanap-infra/fsEngine/pkg/virtualFile"
 	"google.golang.org/protobuf/proto"
 )
+
+const EndOfFile = err.Error("no more frames")
 
 func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 	b, err := proto.Marshal(med)
@@ -39,6 +43,8 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 				}
 				vm.frameChunkRX = fc
 				vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
+				vm.log.Infov("read new frame chunk", "frame chunk index", fc.Index,
+					"start time", fc.StartTime, "end time", fc.EndTime)
 				return fc, nil
 			}
 		}
@@ -54,6 +60,9 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 
 		n, err := vm.vFile.Read(tmpBuf)
 		if n == 0 {
+			if err == virtualFile.EndOfFile {
+				return nil, EndOfFile
+			}
 			return nil, err
 		}
 		vm.vfBuf = append(vm.vfBuf, tmpBuf[:n]...)
