@@ -5,13 +5,13 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/fanap-infra/archiverMedia/pkg/err"
+	errPkg "github.com/fanap-infra/archiverMedia/pkg/err"
 	"github.com/fanap-infra/archiverMedia/pkg/media"
 	"github.com/fanap-infra/fsEngine/pkg/virtualFile"
 	"google.golang.org/protobuf/proto"
 )
 
-const EndOfFile = err.Error("no more frames")
+const EndOfFile = errPkg.Error("no more frames")
 
 func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 	b, err := proto.Marshal(med)
@@ -26,10 +26,10 @@ func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 }
 
 func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
-	tmpBuf := make([]byte, vm.blockSize)
 	frameChunkDataSize := uint32(0)
 	nextFrameChunk := -1
 	for {
+		tmpBuf := make([]byte, vm.blockSize)
 		if frameChunkDataSize != 0 && nextFrameChunk != -1 {
 			if uint32(len(vm.vfBuf[nextFrameChunk+FrameChunkHeader:])) >= frameChunkDataSize {
 				fc := &media.PacketChunk{}
@@ -43,19 +43,23 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 				}
 				vm.frameChunkRX = fc
 				vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
-				vm.log.Infov("read new frame chunk", "frame chunk index", fc.Index,
-					"start time", fc.StartTime, "end time", fc.EndTime)
+				// vm.log.Infov("read new frame chunk", "frame chunk index", fc.Index,
+				//	"start time", fc.StartTime, "end time", fc.EndTime)
 				return fc, nil
 			}
+			// vm.log.Errorv()
+			// frameChunkDataSize = 0
+			nextFrameChunk = -1
 		}
 
 		if nextFrameChunk == -1 {
 			nextFrameChunk = bytes.Index(vm.vfBuf, []byte(FrameChunkIdentifier))
-			if nextFrameChunk != -1 {
-				frameChunkDataSize = binary.BigEndian.Uint32(
-					vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize : nextFrameChunk+FrameChunkHeader])
-				continue
-			}
+		}
+
+		if nextFrameChunk != -1 && frameChunkDataSize == 0 && len(vm.vfBuf) >= nextFrameChunk+FrameChunkHeader {
+			frameChunkDataSize = binary.BigEndian.Uint32(
+				vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize : nextFrameChunk+FrameChunkHeader])
+			continue
 		}
 
 		n, err := vm.vFile.Read(tmpBuf)

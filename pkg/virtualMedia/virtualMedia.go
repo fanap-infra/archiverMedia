@@ -27,3 +27,7 @@ type VirtualMedia struct {
 	archiver            Arch
 	info                *vInfo.Info
 }
+
+func (vm *VirtualMedia) GetInfo() *vInfo.Info {
+	return vm.info
+}

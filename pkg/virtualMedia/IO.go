@@ -18,9 +18,9 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 
 	if frame.PacketType == media.PacketType_PacketVideo && frame.IsKeyFrame {
 		if len(vm.frameChunk.Packets) >= FrameChunkMinimumFrameCount {
-			vm.log.Infov("packet chunk is written", "Index", vm.frameChunk.Index,
-				"packets number", len(vm.frameChunk.Packets), "StartTime", vm.frameChunk.StartTime,
-				"EndTime", vm.frameChunk.EndTime)
+			// vm.log.Infov("packet chunk is written", "Index", vm.frameChunk.Index,
+			//	"packets number", len(vm.frameChunk.Packets), "StartTime", vm.frameChunk.StartTime,
+			//	"EndTime", vm.frameChunk.EndTime)
 			b, err := generateFrameChunk(vm.frameChunk)
 			if err != nil {
 				return err
@@ -43,54 +43,66 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 				return err
 			}
 
-			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1, StartTime: vm.frameChunk.EndTime,
-				Packets: []*media.Packet{}}
-			//vm.log.Infov("Empty packet chunk is written", "Index", vm.frameChunk.Index,
+			vm.frameChunk = &media.PacketChunk{
+				Index: vm.frameChunk.Index + 1, StartTime: vm.frameChunk.EndTime,
+				Packets: []*media.Packet{},
+			}
+			// vm.log.Infov("Empty packet chunk is written", "Index", vm.frameChunk.Index,
 			//	"packets number", len(vm.frameChunk.Packets), "StartTime", vm.frameChunk.StartTime,
 			//	"EndTime", vm.frameChunk.EndTime,"size frame chunk", len(b))
 		}
 	}
-	
-	vm.frameChunk.Packets = append(vm.frameChunk.Packets, frame)
+
 	if frame.PacketType == media.PacketType_PacketVideo {
-		if vm.frameChunk.StartTime == 0 {
+		if len(vm.frameChunk.Packets) == 0 {
 			vm.frameChunk.StartTime = frame.Time
 		}
 		vm.frameChunk.EndTime = frame.Time
 	}
+	vm.frameChunk.Packets = append(vm.frameChunk.Packets, frame)
 	return nil
 }
 
 func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 	vm.rxMUX.Lock()
 	defer vm.rxMUX.Unlock()
-	if vm.frameChunk == nil || int(vm.currentFrameInChunk) >= len(vm.frameChunk.Packets) {
+	if vm.frameChunkRX == nil || int(vm.currentFrameInChunk) >= len(vm.frameChunkRX.Packets) {
 		fc, err := vm.NextFrameChunk()
 		if err != nil {
 			vm.log.Warnv("can not get next frame chunk",
-				"currentFrameInChunk",vm.currentFrameInChunk)
+				"currentFrameInChunk", vm.currentFrameInChunk)
 			return nil, err
 		}
-		vm.frameChunk = fc
+		vm.frameChunkRX = fc
 		vm.currentFrameInChunk = 0
-	} else if uint32(len(vm.frameChunk.Packets)) <= (vm.currentFrameInChunk) {
+	} else if uint32(len(vm.frameChunkRX.Packets)) <= (vm.currentFrameInChunk) {
 		fc, err := vm.NextFrameChunk()
 		if err != nil {
 			vm.log.Warnv("can not get next frame chunk",
-	"frame chunk index", vm.frameChunk.Index,"currentFrameInChunk",vm.currentFrameInChunk)
+				"frame chunk index", vm.frameChunkRX.Index, "currentFrameInChunk", vm.currentFrameInChunk)
 			return nil, err
 		}
-		vm.frameChunk = fc
+		vm.frameChunkRX = fc
 		vm.currentFrameInChunk = 0
 	}
 	vm.currentFrameInChunk++
-	return vm.frameChunk.Packets[vm.currentFrameInChunk-1], nil
+	return vm.frameChunkRX.Packets[vm.currentFrameInChunk-1], nil
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
+	if vm.frameChunkRX.StartTime <= frameTime &&
+		vm.frameChunkRX.EndTime >= frameTime {
+		return vm.frameChunkRX.StartTime, nil
+	}
+	approximateByteIndex := frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime)
+	vm.vfBuf = vm.vfBuf[:0]
+	err := vm.vFile.ChangeSeekPointer(approximateByteIndex)
+	if err != nil {
+		return 0, err
+	}
 	if vm.frameChunkRX == nil {
-		//tmpBuf := make([]byte, 2*vm.blockSize)
-		//vm.vfBuf = vm.vfBuf[:0]
+		// tmpBuf := make([]byte, 2*vm.blockSize)
+
 		//for {
 		//	n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
 		//	if n == 0 {
@@ -101,8 +113,10 @@ func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
 			return 0, err
 		}
 	}
+
 	for {
-		if vm.frameChunkRX.StartTime <= frameTime && vm.frameChunkRX.EndTime >= frameTime {
+		if vm.frameChunkRX.StartTime <= frameTime &&
+			vm.frameChunkRX.EndTime >= frameTime {
 			return vm.frameChunkRX.StartTime, nil
 		} else if vm.frameChunkRX.EndTime < frameTime {
 			_, err := vm.NextFrameChunk()
@@ -116,7 +130,7 @@ func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
 			}
 		}
 	}
-	// approximateByteIndex := (frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime))
+
 	// vm.vFile.
 	// return 0, nil // vm.vFile.
 }
@@ -149,12 +163,12 @@ func (vm *VirtualMedia) Close() error {
 		if err != nil {
 			return err
 		}
-		vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
-			"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
+		// vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
+		//	"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
 		vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
 	}
-	vm.log.Infov("virtual file closed", "vm.frameChunk.Index", vm.frameChunk.Index,
-		"start time", vm.info.StartTime, "end time", vm.info.EndTime)
+	// vm.log.Infov("virtual file closed", "vm.frameChunk.Index", vm.frameChunk.Index,
+	//	"start time", vm.info.StartTime, "end time", vm.info.EndTime)
 	err := vm.vFile.Close()
 	if err != nil {
 		vm.log.Errorv("virtual media can not close", "err", err.Error())

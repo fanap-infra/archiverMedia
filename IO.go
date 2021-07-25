@@ -34,9 +34,6 @@ func (arch *Archiver) Closed(fileID uint32) error {
 			// ToDo: get index in addition to fileID
 			arch.openFiles[fileID] = vms[: len(vms)-1]
 		}
-
 	}
-
-
 	return nil
 }
