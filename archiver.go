@@ -15,5 +15,9 @@ type Archiver struct {
 	fs            *fsEngine.FSEngine
 	blockSize     uint32
 	crudMutex     sync.Mutex
-	openFiles     map[uint32]*virtualMedia.VirtualMedia
+	openFiles     map[uint32][]*virtualMedia.VirtualMedia
+}
+
+func (arch *Archiver) GetPath() string {
+	return arch.fs.GetFilePath()
 }
