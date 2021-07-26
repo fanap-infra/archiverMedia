@@ -90,29 +90,38 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
-	if vm.frameChunkRX.StartTime <= frameTime &&
-		vm.frameChunkRX.EndTime >= frameTime {
-		return vm.frameChunkRX.StartTime, nil
+	if vm.frameChunkRX != nil {
+		if vm.frameChunkRX.StartTime <= frameTime &&
+			vm.frameChunkRX.EndTime >= frameTime {
+			return vm.frameChunkRX.StartTime, nil
+		}
 	}
+
 	approximateByteIndex := frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime)
 	vm.vfBuf = vm.vfBuf[:0]
+	// moving forward is easier than backward moving
+	approximateByteIndex = approximateByteIndex - int64(vm.blockSize)
+	if approximateByteIndex < 0 {
+		approximateByteIndex = 0
+	}
 	err := vm.vFile.ChangeSeekPointer(approximateByteIndex)
 	if err != nil {
 		return 0, err
 	}
-	if vm.frameChunkRX == nil {
-		// tmpBuf := make([]byte, 2*vm.blockSize)
 
-		//for {
-		//	n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
-		//	if n == 0 {
-		//		return nil, err
-		//}
-		_, err := vm.NextFrameChunk()
-		if err != nil {
-			return 0, err
-		}
+	_, err = vm.NextFrameChunk()
+	if err != nil {
+		return 0, err
 	}
+	//if vm.frameChunkRX == nil {
+	//	// tmpBuf := make([]byte, 2*vm.blockSize)
+	//
+	//	//for {
+	//	//	n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
+	//	//	if n == 0 {
+	//	//		return nil, err
+	//	//}
+	//}
 
 	for {
 		if vm.frameChunkRX.StartTime <= frameTime &&

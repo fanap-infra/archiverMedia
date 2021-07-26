@@ -37,12 +37,15 @@ func TestIO_OneVirtualMediaFile(t *testing.T) {
 	vm, err := arch.NewVirtualMediaFile(vfID, "test")
 	assert.Equal(t, nil, err)
 	size := 0
-
+	packetTime := 0
 	for {
 		token := make([]byte, uint32(rand.Intn(MaxByteArraySize)))
 		m, err := rand.Read(token)
 		assert.Equal(t, nil, err)
-		pkt := &media.Packet{Data: token, PacketType: media.PacketType_PacketVideo, IsKeyFrame: true}
+		pkt := &media.Packet{
+			Data: token, PacketType: media.PacketType_PacketVideo,
+			IsKeyFrame: true, Time: int64(packetTime),
+		}
 		packets = append(packets, pkt)
 		size = size + m
 		err = vm.WriteFrame(pkt)
@@ -67,6 +70,7 @@ func TestIO_OneVirtualMediaFile(t *testing.T) {
 			break
 		}
 		assert.Equal(t, packet.Data, pkt.Data)
+		assert.Equal(t, packet.Time, pkt.Time)
 	}
 	err = vm2.Close()
 	assert.Equal(t, nil, err)
@@ -259,8 +263,7 @@ func TestIO_ChangeFrameTime(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	// blockSizeTest
-	// fileSizeTest
+
 	blockSizeTestTemp := 128
 	arch, err := provider.CreateFileSystem(homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
 		log.GetScope("test"))
