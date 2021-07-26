@@ -17,8 +17,8 @@ import (
 func TestDelete_NoSpace(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/" + fsPath)
-	_ = utils.DeleteFile(homePath + "/" + headerPath)
+	_ = utils.DeleteFile(homePath + "/"+fsPath)
+	_ = utils.DeleteFile(homePath + "/"+headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
 	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
@@ -105,6 +105,6 @@ func TestDelete_NoSpace(t *testing.T) {
 	wg.Wait()
 	err = arch.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/" + fsPath)
-	_ = utils.DeleteFile(homePath + "/" + headerPath)
+	_ = utils.DeleteFile(homePath + "/"+fsPath)
+	_ = utils.DeleteFile(homePath + "/"+headerPath)
 }
