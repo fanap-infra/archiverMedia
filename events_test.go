@@ -17,15 +17,15 @@ import (
 func TestDelete_NoSpace(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + fsPathTest)
-	_ = utils.DeleteFile(homePath + headerPathTest)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	arch, err := provider.CreateFileSystem(homePath+fsPathTest, fileSizeTest, blockSizeTest, &eventListener,
+	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
 		log.GetScope("test"))
 	assert.Equal(t, nil, err)
-	assert.Equal(t, true, utils.FileExists(homePath+fsPathTest))
-	assert.Equal(t, true, utils.FileExists(homePath+headerPathTest))
+	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
+	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
 
 	MaxID := 1000
 	MaxByteArraySize := int(blockSizeTest * 0.5)
@@ -105,6 +105,6 @@ func TestDelete_NoSpace(t *testing.T) {
 	wg.Wait()
 	err = arch.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + fsPathTest)
-	_ = utils.DeleteFile(homePath + headerPathTest)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 }
