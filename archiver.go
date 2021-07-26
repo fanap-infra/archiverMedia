@@ -21,3 +21,7 @@ type Archiver struct {
 func (arch *Archiver) GetPath() string {
 	return arch.fs.GetFilePath()
 }
+
+func (arch *Archiver) GetPath() string {
+	return arch.fs.GetFilePath()
+}
