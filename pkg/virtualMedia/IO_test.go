@@ -18,9 +18,9 @@ const (
 	blockSizeTest = 5120
 	vfID          = 1
 
-	fsPath               = "fs.beh"
-	headerPath           = "Header.Beh"
-	fileSizeTest   = blockSizeTest * 128
+	fsPath       = "fs.beh"
+	headerPath   = "Header.Beh"
+	fileSizeTest = blockSizeTest * 128
 )
 
 type ArchMock struct {
@@ -60,8 +60,8 @@ func NewVBufMock(t *testing.T, path string) (*ArchMock, error) {
 func TestIO_WR(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath +  "/"+fsPath)
-	_ = utils.DeleteFile(homePath + "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 
 	archMock, err := NewVBufMock(t, homePath)
 	assert.Equal(t, nil, err)
@@ -107,6 +107,6 @@ func TestIO_WR(t *testing.T) {
 
 	err = archMock.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath +  "/"+fsPath)
-	_ = utils.DeleteFile(homePath +  "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 }
