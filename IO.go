@@ -6,14 +6,13 @@ func (arch *Archiver) Close() error {
 	defer arch.crudMutex.Unlock()
 
 	for _, vms := range arch.openFiles {
-		for _,vm := range vms {
+		for _, vm := range vms {
 			err := vm.CloseWithNotifyArchiver()
 			if err != nil {
 				arch.log.Warnv("Can not close virtual media", "err", err.Error())
 				return err
 			}
 		}
-
 	}
 	err := arch.fs.Close()
 	if err != nil {
@@ -32,7 +31,7 @@ func (arch *Archiver) Closed(fileID uint32) error {
 			delete(arch.openFiles, fileID)
 		} else {
 			// ToDo: get index in addition to fileID
-			arch.openFiles[fileID] = vms[: len(vms)-1]
+			arch.openFiles[fileID] = vms[:len(vms)-1]
 		}
 	}
 	return nil

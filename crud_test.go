@@ -16,8 +16,8 @@ import (
 func TestVirtualMedia_Remove(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/"+fsPath)
-	_ = utils.DeleteFile(homePath + "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
 	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener, log.GetScope("test"))
@@ -75,15 +75,15 @@ func TestVirtualMedia_Remove(t *testing.T) {
 
 	err = arch.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/"+fsPath)
-	_ = utils.DeleteFile(homePath + "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 }
 
 func TestVirtualMedia_Open(t *testing.T) {
 	homePath, err := os.UserHomeDir()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/"+fsPath)
-	_ = utils.DeleteFile(homePath + "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	var eventListener EventsListener
 	provider := NewProvider()
 	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
@@ -122,6 +122,6 @@ func TestVirtualMedia_Open(t *testing.T) {
 
 	err = arch.Close()
 	assert.Equal(t, nil, err)
-	_ = utils.DeleteFile(homePath + "/"+fsPath)
-	_ = utils.DeleteFile(homePath + "/"+headerPath)
+	_ = utils.DeleteFile(homePath + "/" + fsPath)
+	_ = utils.DeleteFile(homePath + "/" + headerPath)
 }
