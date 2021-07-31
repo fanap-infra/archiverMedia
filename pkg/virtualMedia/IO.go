@@ -100,7 +100,7 @@ func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
 	approximateByteIndex := frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime)
 	vm.vfBuf = vm.vfBuf[:0]
 	// moving forward is easier than backward moving
-	approximateByteIndex = approximateByteIndex - int64(vm.blockSize)
+	approximateByteIndex = approximateByteIndex - int64(vm.blockSize*2)
 	if approximateByteIndex < 0 {
 		approximateByteIndex = 0
 	}
