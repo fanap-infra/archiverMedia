@@ -78,8 +78,8 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 	} else if uint32(len(vm.frameChunkRX.Packets)) <= (vm.currentFrameInChunk) {
 		fc, err := vm.NextFrameChunk()
 		if err != nil {
-			vm.log.Warnv("can not get next frame chunk",
-				"frame chunk index", vm.frameChunkRX.Index, "currentFrameInChunk", vm.currentFrameInChunk)
+			// vm.log.Warnv("can not get next frame chunk",
+			//	"frame chunk index", vm.frameChunkRX.Index, "currentFrameInChunk", vm.currentFrameInChunk)
 			return nil, err
 		}
 		vm.frameChunkRX = fc
