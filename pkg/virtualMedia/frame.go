@@ -33,6 +33,7 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 		if frameChunkDataSize != 0 && nextFrameChunk != -1 {
 			if uint32(len(vm.vfBuf[nextFrameChunk+FrameChunkHeader:])) >= frameChunkDataSize {
 				fc := &media.PacketChunk{}
+				vm.frameChunkRXSize = FrameChunkHeader + frameChunkDataSize
 				err := proto.Unmarshal(vm.vfBuf[nextFrameChunk+FrameChunkHeader:nextFrameChunk+FrameChunkHeader+int(frameChunkDataSize)], fc)
 				if err != nil {
 					vm.log.Errorv("FrameChunk proto.Unmarshal", "err", err.Error(),
@@ -44,12 +45,10 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 				}
 				vm.frameChunkRX = fc
 				vm.vfBuf = vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize+int(frameChunkDataSize):]
-				// vm.log.Infov("read new frame chunk", "frame chunk index", fc.Index,
-				//	"start time", fc.StartTime, "end time", fc.EndTime)
+
 				return fc, nil
 			}
-			// vm.log.Errorv()
-			// frameChunkDataSize = 0
+
 			nextFrameChunk = -1
 		}
 
@@ -75,25 +74,23 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 }
 
 func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
-	vm.log.Infov("PreviousFrameChunk", "vm.fileID", vm.fileID)
 	if vm.frameChunkRX != nil {
-		if vm.frameChunkRX.Index == 1 {
+		if vm.frameChunkRX.Index == 1 || vm.frameChunkRX.PreviousChunkSize == 0 {
 			return nil, fmt.Errorf("there is no previous frame chunk")
 		}
 	} else {
 		return vm.NextFrameChunk()
 	}
 	currentFrameChunkIndex := vm.frameChunkRX.Index
-	seekPointer := vm.vFile.GetSeek() - int(vm.blockSize*2)
+	seekPointer := vm.vFile.GetSeek() - int(vm.frameChunkRX.PreviousChunkSize) - int(vm.frameChunkRXSize)
 	if seekPointer < 0 {
 		seekPointer = 0
 	}
-	tmpBuf := make([]byte, 2*vm.blockSize)
+	tmpBuf := make([]byte, vm.frameChunkRX.PreviousChunkSize)
 	vm.vfBuf = vm.vfBuf[:0]
 	counter := 0
 	for {
-		vm.log.Infov("PreviousFrameChunk", "currentFrameChunkIndex", currentFrameChunkIndex,
-			"vm.frameChunkRX.Index", vm.frameChunkRX.Index, "vm.fileID", vm.fileID)
+
 		counter++
 		if counter > 5 {
 			vm.log.Errorv("break PreviousFrameChunk loop")
@@ -119,6 +116,4 @@ func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
 			return vm.NextFrameChunk()
 		}
 	}
-
-	// return nil, nil
 }

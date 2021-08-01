@@ -26,7 +26,7 @@ func NewVirtualMedia(fileName string, fileID uint32, blockSize uint32, vFile *vi
 	log *log.Logger) *VirtualMedia {
 	return &VirtualMedia{
 		vfBuf:      make([]byte, 0),
-		frameChunk: &media.PacketChunk{Packets: []*media.Packet{}, Index: 1},
+		frameChunk: &media.PacketChunk{Packets: []*media.Packet{}, Index: 1, PreviousChunkSize: 0},
 		vFile:      vFile,
 		name:       fileName,
 		fileID:     fileID,

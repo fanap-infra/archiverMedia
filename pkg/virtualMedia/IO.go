@@ -45,7 +45,7 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 
 			vm.frameChunk = &media.PacketChunk{
 				Index: vm.frameChunk.Index + 1, StartTime: vm.frameChunk.EndTime,
-				Packets: []*media.Packet{},
+				Packets: []*media.Packet{}, PreviousChunkSize: uint32(len(b)),
 			}
 			// vm.log.Infov("Empty packet chunk is written", "Index", vm.frameChunk.Index,
 			//	"packets number", len(vm.frameChunk.Packets), "StartTime", vm.frameChunk.StartTime,
@@ -54,7 +54,7 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 	}
 
 	if frame.PacketType == media.PacketType_PacketVideo {
-		if len(vm.frameChunk.Packets) == 0 {
+		if len(vm.frameChunk.Packets) == 0 && vm.frameChunk.Index == 1 {
 			vm.frameChunk.StartTime = frame.Time
 		}
 		vm.frameChunk.EndTime = frame.Time
@@ -139,9 +139,6 @@ func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
 			}
 		}
 	}
-
-	// vm.vFile.
-	// return 0, nil // vm.vFile.
 }
 
 func (vm *VirtualMedia) Close() error {
