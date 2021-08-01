@@ -28,6 +28,7 @@ func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 	frameChunkDataSize := uint32(0)
 	nextFrameChunk := -1
+	errorCounter := 0
 	for {
 		tmpBuf := make([]byte, vm.blockSize)
 		if frameChunkDataSize != 0 && nextFrameChunk != -1 {
@@ -40,15 +41,19 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 						"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize,
 						"len(vm.vfBuf)", len(vm.vfBuf))
 					vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
-
-					return nil, err
+					errorCounter++
+					if errorCounter > 1 {
+						vm.log.Errorv("can not parse proto file multiple times",
+							"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize,
+							"len(vm.vfBuf)", len(vm.vfBuf))
+						return nil, err
+					}
+				} else {
+					vm.frameChunkRX = fc
+					vm.vfBuf = vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize+int(frameChunkDataSize):]
+					return fc, nil
 				}
-				vm.frameChunkRX = fc
-				vm.vfBuf = vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize+int(frameChunkDataSize):]
-
-				return fc, nil
 			}
-
 			nextFrameChunk = -1
 		}
 
