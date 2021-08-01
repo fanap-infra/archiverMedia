@@ -17,6 +17,7 @@ type VirtualMedia struct {
 	frameChunk          *media.PacketChunk
 	currentFrameInChunk uint32
 	frameChunkRX        *media.PacketChunk
+	frameChunkRXSize    uint32
 	readOnly            bool
 	fwMUX               sync.Mutex
 	rxMUX               sync.Mutex

@@ -45,4 +45,5 @@ message PacketChunk {
     int64 endTime = 4;
     uint32 packetCount = 5;
     repeated Packet packets = 6;
+    uint32 previousChunkSize = 7;
 }
