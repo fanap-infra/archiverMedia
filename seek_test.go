@@ -141,7 +141,7 @@ func TestIO_PreviousFrameChunk(t *testing.T) {
 	assert.Equal(t, nil, err)
 	// numberOfTests := 5
 	// counter := 0
-	mTime := int64(packetTime - 30)
+	mTime := int64(packetTime - 60)
 	resultTime, err := vm2.GotoTime(mTime)
 	assert.Equal(t, nil, err)
 	assert.GreaterOrEqual(t, mTime+int64(virtualMedia.FrameChunkMinimumFrameCount*30), resultTime)
@@ -157,10 +157,11 @@ func TestIO_PreviousFrameChunk(t *testing.T) {
 			if !assert.Equal(t, fcStartTime, fc.EndTime) {
 				break
 			}
+
 			assert.GreaterOrEqual(t, fc.EndTime, fc.StartTime)
 			fcStartTime = fc.StartTime
 			IDX = fc.Index
-			// fcEndTime = fc.EndTime
+
 			if fcStartTime < int64(virtualMedia.FrameChunkMinimumFrameCount*30) {
 				break
 			}
