@@ -95,13 +95,13 @@ func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
 	vm.vfBuf = vm.vfBuf[:0]
 	counter := 0
 	for {
-
 		counter++
 		if counter > 5 {
 			vm.log.Errorv("break PreviousFrameChunk loop")
 			return vm.NextFrameChunk()
 		}
 		n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
+
 		if n == 0 {
 			return nil, err
 		}
