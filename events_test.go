@@ -21,6 +21,7 @@ func TestDelete_NoSpace(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
+
 	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
 		log.GetScope("test"))
 	assert.Equal(t, nil, err)
