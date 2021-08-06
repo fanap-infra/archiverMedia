@@ -46,4 +46,5 @@ message PacketChunk {
     uint32 packetCount = 5;
     repeated Packet packets = 6;
     uint32 previousChunkSize = 7;
+    uint32 previousChunkStartAddress = 8;
 }
