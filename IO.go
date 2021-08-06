@@ -22,6 +22,7 @@ func (arch *Archiver) Close() error {
 	return nil
 }
 
+// It is called from virtual file
 func (arch *Archiver) Closed(fileID uint32) error {
 	arch.crudMutex.Lock()
 	defer arch.crudMutex.Unlock()
