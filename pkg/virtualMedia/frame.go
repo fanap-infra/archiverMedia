@@ -50,6 +50,7 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 					}
 				} else {
 					vm.frameChunkRX = fc
+					vm.currentFrameInChunk = 0
 					vm.vfBuf = vm.vfBuf[nextFrameChunk+FrameChunkIdentifierSize+int(frameChunkDataSize):]
 					return fc, nil
 				}
@@ -87,38 +88,52 @@ func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
 		return vm.NextFrameChunk()
 	}
 	currentFrameChunkIndex := vm.frameChunkRX.Index
-	seekPointer := vm.vFile.GetSeek() - int(vm.frameChunkRX.PreviousChunkSize) - int(vm.frameChunkRXSize)
-	if seekPointer < 0 {
-		seekPointer = 0
-	}
+	//seekPointer := vm.vFile.GetSeek() - int(vm.frameChunkRX.PreviousChunkSize) - int(vm.frameChunkRXSize)
+	//if seekPointer < 0 {
+	//	seekPointer = 0
+	//}
 	tmpBuf := make([]byte, vm.frameChunkRX.PreviousChunkSize)
 	vm.vfBuf = vm.vfBuf[:0]
-	counter := 0
-	for {
-		counter++
-		if counter > 5 {
-			vm.log.Errorv("break PreviousFrameChunk loop")
-			return vm.NextFrameChunk()
-		}
-		n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
-
-		if n == 0 {
-			return nil, err
-		}
-		vm.vfBuf = append(tmpBuf[:n], vm.vfBuf...)
-		fc, err := vm.NextFrameChunk()
-		if err != nil {
-			return nil, err
-		}
-		if fc.Index+1 == currentFrameChunkIndex {
-			return fc, nil
-		} else if fc.Index > currentFrameChunkIndex {
-			seekPointer = seekPointer - int(vm.blockSize*2)
-			if seekPointer < 0 {
-				seekPointer = 0
-			}
-		} else {
-			return vm.NextFrameChunk()
-		}
+	// counter := 0
+	n, err := vm.vFile.ReadAt(tmpBuf, int64(vm.frameChunkRX.PreviousChunkStartAddress))
+	if n == 0 {
+		return nil, err
 	}
+	vm.vfBuf = append(tmpBuf[:n], vm.vfBuf...)
+	fc, err := vm.NextFrameChunk()
+	if err != nil {
+		vm.log.Errorv("can not get previous frame chunk", "n", n, "len(tmpBuf)", len(tmpBuf),
+			"currentFrameChunkIndex", currentFrameChunkIndex,
+			"err", err.Error())
+		return nil, err
+	}
+	return fc, nil
+
+	//for {
+	//	counter++
+	//	if counter > 5 {
+	//		vm.log.Errorv("break PreviousFrameChunk loop")
+	//		return vm.NextFrameChunk()
+	//	}
+	//	n, err := vm.vFile.ReadAt(tmpBuf, int64(seekPointer))
+	//
+	//	if n == 0 {
+	//		return nil, err
+	//	}
+	//	vm.vfBuf = append(tmpBuf[:n], vm.vfBuf...)
+	//fc, err := vm.NextFrameChunk()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//	if fc.Index+1 == currentFrameChunkIndex {
+	//		return fc, nil
+	//	} else if fc.Index > currentFrameChunkIndex {
+	//		seekPointer = seekPointer - int(vm.blockSize*2)
+	//		if seekPointer < 0 {
+	//			seekPointer = 0
+	//		}
+	//	} else {
+	//		return vm.NextFrameChunk()
+	//	}
+	//}
 }
