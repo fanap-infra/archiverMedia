@@ -26,7 +26,6 @@ func TestVirtualMedia_Remove(t *testing.T) {
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
 	var testIDs []uint32
 	var testNames []string
-
 	TestSize := 5
 	MaxID := 1000
 	var vms []*virtualMedia.VirtualMedia
