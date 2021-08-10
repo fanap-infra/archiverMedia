@@ -26,6 +26,7 @@ func generateFrameChunk(med *media.PacketChunk) ([]byte, error) {
 }
 
 func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
+	//ToDo: do not expose this functions , it is not safe thread
 	frameChunkDataSize := uint32(0)
 	nextFrameChunk := -1
 	errorCounter := 0
@@ -73,6 +74,9 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 			if err == virtualFile.EndOfFile {
 				return nil, EndOfFile
 			}
+			vm.log.Warnv("can not read data", "id", vm.fileID,
+				"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize,
+				"len(vm.vfBuf)", len(vm.vfBuf), "err", err.Error())
 			return nil, err
 		}
 		vm.vfBuf = append(vm.vfBuf, tmpBuf[:n]...)
@@ -80,6 +84,7 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 }
 
 func (vm *VirtualMedia) PreviousFrameChunk() (*media.PacketChunk, error) {
+	//ToDo: do not expose this functions , it is not safe thread
 	if vm.frameChunkRX != nil {
 		if vm.frameChunkRX.Index == 1 || vm.frameChunkRX.PreviousChunkSize == 0 {
 			return nil, fmt.Errorf("there is no previous frame chunk")

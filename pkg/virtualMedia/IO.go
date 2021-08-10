@@ -91,6 +91,8 @@ func (vm *VirtualMedia) ReadFrame() (*media.Packet, error) {
 }
 
 func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
+	vm.rxMUX.Lock()
+	defer vm.rxMUX.Unlock()
 	if vm.frameChunkRX != nil {
 		if vm.frameChunkRX.StartTime <= frameTime &&
 			vm.frameChunkRX.EndTime >= frameTime {

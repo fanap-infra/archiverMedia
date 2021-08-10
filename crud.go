@@ -1,8 +1,6 @@
 package archiverMedia
 
 import (
-	"fmt"
-
 	"github.com/fanap-infra/archiverMedia/pkg/vInfo"
 
 	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
@@ -17,7 +15,7 @@ func (arch *Archiver) NewVirtualMediaFile(id uint32, fileName string) (*virtualM
 		return nil, err
 	}
 	vm := virtualMedia.NewVirtualMedia(fileName, id, arch.blockSize, vf, arch, arch.log)
-	arch.openFiles[id] = append(arch.openFiles[id], vm)
+	//arch.openFiles[id] = append(arch.openFiles[id], vm)
 	return vm, nil
 }
 
@@ -38,17 +36,17 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 		return nil, err
 	}
 	vm := virtualMedia.OpenVirtualMedia(vf.GetFileName(), id, arch.blockSize, vf, arch, info, arch.log)
-	arch.openFiles[id] = append(arch.openFiles[id], vm)
+	//arch.openFiles[id] = append(arch.openFiles[id], vm)
 	return vm, nil
 }
 
 func (arch *Archiver) RemoveVirtualMediaFile(id uint32) error {
 	arch.crudMutex.Lock()
 	defer arch.crudMutex.Unlock()
-	_, ok := arch.openFiles[id]
-	if ok {
-		return fmt.Errorf("virtual media id : %d is opened", id)
-	}
+	//_, ok := arch.openFiles[id]
+	//if ok {
+	//	return fmt.Errorf("virtual media id : %d is opened", id)
+	//}
 	err := arch.fs.RemoveVirtualFile(id)
 	if err != nil {
 		return err
