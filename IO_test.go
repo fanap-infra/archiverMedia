@@ -22,8 +22,8 @@ func TestIO_OneVirtualMediaFile(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
-		log.GetScope("test"))
+	arch, err := provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest, &eventListener,
+		log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
@@ -86,8 +86,8 @@ func TestIO_MultipleVirtualMediaFileConsecutively(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	arch, err := provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest, &eventListener,
-		log.GetScope("test"))
+	arch, err := provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest, &eventListener,
+		log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))

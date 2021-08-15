@@ -14,6 +14,7 @@ const (
 	headerPath    = "Header.Beh"
 	blockSizeTest = 5120
 	fileSizeTest  = blockSizeTest * 128
+	fsID          = 11
 )
 
 type EventsListener struct {
@@ -32,8 +33,8 @@ func TestCreateFS(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	_, err = provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest,
-		&eventListener, log.GetScope("test"))
+	_, err = provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest,
+		&eventListener, log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
@@ -51,10 +52,10 @@ func TestParseFS(t *testing.T) {
 	_ = utils.DeleteFile(homePath + "/" + headerPath)
 	eventListener := EventsListener{t: t}
 	provider := NewProvider()
-	_, err = provider.CreateFileSystem(homePath, fileSizeTest, blockSizeTest,
-		&eventListener, log.GetScope("test"))
+	_, err = provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest,
+		&eventListener, log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
-	fs, err := provider.ParseFileSystem(homePath, &eventListener, log.GetScope("test"))
+	fs, err := provider.ParseFileSystem(fsID,homePath, &eventListener, log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, fs.blockSize, uint32(blockSizeTest))
 	_ = utils.DeleteFile(homePath + "/" + fsPath)
