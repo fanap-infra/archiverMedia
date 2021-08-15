@@ -21,6 +21,7 @@ const (
 	fsPath       = "fs.beh"
 	headerPath   = "Header.Beh"
 	fileSizeTest = blockSizeTest * 128
+	fsID = 11
 )
 
 type ArchMock struct {
@@ -49,7 +50,7 @@ func NewVBufMock(t *testing.T, path string) (*ArchMock, error) {
 		log:       log.GetScope("test"),
 	}
 	// arch.log.Infov("create archiver ", "path", path)
-	fs, err := fsEngine.CreateFileSystem(path, fileSizeTest, blockSizeTest, arch, arch.log)
+	fs, err := fsEngine.CreateFileSystem(fsID, path, fileSizeTest, blockSizeTest, arch, arch.log, nil)
 	if err != nil {
 		return nil, err
 	}

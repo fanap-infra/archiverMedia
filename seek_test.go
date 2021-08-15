@@ -22,8 +22,8 @@ func TestIO_ChangeFrameTime_DataSmallerBlock(t *testing.T) {
 	provider := NewProvider()
 
 	blockSizeTestTemp := 128
-	arch, err := provider.CreateFileSystem(homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
-		log.GetScope("test"))
+	arch, err := provider.CreateFileSystem(fsID,homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
+		log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
@@ -103,8 +103,8 @@ func TestIO_ChangeFrameTime_DataBiggerBlock(t *testing.T) {
 	provider := NewProvider()
 
 	blockSizeTestTemp := 128
-	arch, err := provider.CreateFileSystem(homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
-		log.GetScope("test"))
+	arch, err := provider.CreateFileSystem(fsID,homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
+		log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
@@ -186,8 +186,8 @@ func TestIO_PreviousFrameChunk(t *testing.T) {
 	provider := NewProvider()
 
 	blockSizeTestTemp := 128
-	arch, err := provider.CreateFileSystem(homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
-		log.GetScope("test"))
+	arch, err := provider.CreateFileSystem(fsID,homePath, int64(blockSizeTestTemp*128), uint32(blockSizeTestTemp), &eventListener,
+		log.GetScope("test"), nil)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
