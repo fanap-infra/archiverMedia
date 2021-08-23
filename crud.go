@@ -47,7 +47,7 @@ func (arch *Archiver) RemoveVirtualMediaFile(id uint32) error {
 	//if ok {
 	//	return fmt.Errorf("virtual media id : %d is opened", id)
 	//}
-	err := arch.fs.RemoveVirtualFile(id)
+	_, err := arch.fs.RemoveVirtualFile(id)
 	if err != nil {
 		return err
 	}

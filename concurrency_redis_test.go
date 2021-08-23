@@ -1,19 +1,5 @@
 package archiverMedia
-//
-//import (
-//	"math/rand"
-//	"os"
-//	"strconv"
-//	"sync"
-//	"testing"
-//
-//	"github.com/fanap-infra/archiverMedia/pkg/media"
-//	"github.com/fanap-infra/archiverMedia/pkg/utils"
-//	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
-//	"github.com/fanap-infra/log"
-//	"github.com/stretchr/testify/assert"
-//)
-//
+
 //func TestIO_MultipleVirtualMediaFileConcurrency_Redis(t *testing.T) {
 //	homePath, err := os.UserHomeDir()
 //	assert.Equal(t, nil, err)
@@ -21,8 +7,9 @@ package archiverMedia
 //	_ = utils.DeleteFile(homePath + "/" + headerPath)
 //	eventListener := EventsListener{t: t}
 //	provider := NewProvider()
+//	redisMock := mocks.NewRedisMock()
 //	arch, err := provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest, &eventListener,
-//		log.GetScope("test"), redisOptions)
+//		log.GetScope("test"), &redisMock)
 //	assert.Equal(t, nil, err)
 //	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 //	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))
@@ -116,8 +103,9 @@ package archiverMedia
 //	_ = utils.DeleteFile(homePath + "/" + headerPath)
 //	eventListener := EventsListener{t: t}
 //	provider := NewProvider()
+//	redisMock := mocks.NewRedisMock()
 //	arch, err := provider.CreateFileSystem(fsID,homePath, fileSizeTest, blockSizeTest, &eventListener,
-//		log.GetScope("test"), redisOptions)
+//		log.GetScope("test"), &redisMock)
 //	assert.Equal(t, nil, err)
 //	assert.Equal(t, true, utils.FileExists(homePath+"/"+fsPath))
 //	assert.Equal(t, true, utils.FileExists(homePath+"/"+headerPath))

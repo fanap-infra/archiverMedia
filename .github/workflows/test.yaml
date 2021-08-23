@@ -1,0 +1,35 @@
+name: check_tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        go-version: [1.16.x]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: test
+        run: make test
+      - name: lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.29
+      - name: list-test
+        run: make lint-test
+      - name: unit-test
+        run: make unit-test
+      - name: race-test
+        run: make race-test

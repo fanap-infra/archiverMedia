@@ -2,7 +2,7 @@ package archiverMedia
 
 import (
 	"fmt"
-	"github.com/fanap-infra/fsEngine/pkg/redisClient"
+	Header_ "github.com/fanap-infra/fsEngine/pkg/Header"
 	"sync"
 
 	"github.com/fanap-infra/archiverMedia/pkg/virtualMedia"
@@ -25,7 +25,7 @@ func NewProvider() *Provider {
 }
 
 func (p *Provider) CreateFileSystem(id uint32,path string, size int64, blockSize uint32, eventsHandler Events,
-	log *log.Logger, options *redisClient.RedisOptions) (*Archiver, error) {
+	log *log.Logger, redisDB Header_.RedisDB) (*Archiver, error) {
 	p.crudMutex.Lock()
 	defer p.crudMutex.Unlock()
 	_, ok := p.openedArchiver[path]
@@ -37,7 +37,7 @@ func (p *Provider) CreateFileSystem(id uint32,path string, size int64, blockSize
 		log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32][]*virtualMedia.VirtualMedia),
 		blockSize: blockSize,
 	}
-	fs, err := fsEngine.CreateFileSystem(id,path, size, blockSize, arch, log, options)
+	fs, err := fsEngine.CreateFileSystem(id,path, size, blockSize, arch, log, redisDB)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (p *Provider) CreateFileSystem(id uint32,path string, size int64, blockSize
 	return arch, nil
 }
 
-func (p *Provider) ParseFileSystem(id uint32,path string, eventsHandler Events, log *log.Logger, options *redisClient.RedisOptions) (*Archiver, error) {
+func (p *Provider) ParseFileSystem(id uint32,path string, eventsHandler Events, log *log.Logger, redisDB Header_.RedisDB) (*Archiver, error) {
 	p.crudMutex.Lock()
 	defer p.crudMutex.Unlock()
 	arch, ok := p.openedArchiver[path]
@@ -55,7 +55,7 @@ func (p *Provider) ParseFileSystem(id uint32,path string, eventsHandler Events, 
 	}
 
 	arch = &Archiver{log: log, EventsHandler: eventsHandler, openFiles: make(map[uint32][]*virtualMedia.VirtualMedia)}
-	fs, err := fsEngine.ParseFileSystem(id,path, arch, log, options)
+	fs, err := fsEngine.ParseFileSystem(id,path, arch, log, redisDB)
 	if err != nil {
 		return nil, err
 	}
