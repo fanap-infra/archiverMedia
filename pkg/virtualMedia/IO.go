@@ -34,11 +34,8 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 				vm.info.StartTime = vm.frameChunk.StartTime
 			}
 			vm.info.EndTime = vm.frameChunk.EndTime
-			bInfo, err := proto.Marshal(vm.info)
-			if err != nil {
-				return err
-			}
-			err = vm.vFile.UpdateFileOptionalData(bInfo)
+
+			err = vm.UpdateFileOptionalData()
 			if err != nil {
 				return err
 			}
@@ -61,6 +58,18 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 		vm.frameChunk.EndTime = frame.Time
 	}
 	vm.frameChunk.Packets = append(vm.frameChunk.Packets, frame)
+	return nil
+}
+
+func (vm *VirtualMedia) UpdateFileOptionalData()  error {
+	bInfo, err := proto.Marshal(vm.info)
+	if err != nil {
+		return err
+	}
+	err = vm.vFile.UpdateFileOptionalData(bInfo)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -100,8 +109,14 @@ func (vm *VirtualMedia) GotoTime(frameTime int64) (int64, error) {
 			return vm.frameChunkRX.StartTime, nil
 		}
 	}
+	approximateByteIndex := int64(0)
+	if vm.info.EndTime - vm.info.StartTime != 0 {
+		approximateByteIndex = frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime)
+	} else {
+		vm.log.Warnv("virtual media info time are wrong", "fileID",vm.fileID,
+			"endTime",vm.info.EndTime, "StartTime", vm.info.StartTime )
+	}
 
-	approximateByteIndex := frameTime * int64(vm.vFile.GetFileSize()) / (vm.info.EndTime - vm.info.StartTime)
 	vm.vfBuf = vm.vfBuf[:0]
 	// moving forward is easier than backward moving
 	approximateByteIndex = approximateByteIndex - int64(vm.blockSize*2)
@@ -151,7 +166,7 @@ func (vm *VirtualMedia) Close() error {
 	vm.rxMUX.Lock()
 	defer vm.rxMUX.Unlock()
 
-	if len(vm.frameChunk.Packets) > 0 {
+	if len(vm.frameChunk.Packets) > 0 && !vm.readOnly {
 		b, err := generateFrameChunk(vm.frameChunk)
 		if err != nil {
 			return err
@@ -165,11 +180,7 @@ func (vm *VirtualMedia) Close() error {
 			vm.info.StartTime = vm.frameChunk.StartTime
 		}
 		vm.info.EndTime = vm.frameChunk.EndTime
-		bInfo, err := proto.Marshal(vm.info)
-		if err != nil {
-			return err
-		}
-		err = vm.vFile.UpdateFileOptionalData(bInfo)
+		err = vm.UpdateFileOptionalData()
 		if err != nil {
 			return err
 		}
