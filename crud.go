@@ -31,11 +31,35 @@ func (arch *Archiver) OpenVirtualMediaFile(id uint32) (*virtualMedia.VirtualMedi
 		return nil, err
 	}
 
+	if len(vf.GetOptionalData()) == 0 {
+		arch.log.Warnv("optional data is empty", "id", vf.GetFileID())
+	}
+
 	info, err := vInfo.Parse(vf.GetOptionalData())
 	if err != nil {
 		return nil, err
 	}
 	vm := virtualMedia.OpenVirtualMedia(vf.GetFileName(), id, arch.blockSize, vf, arch, info, arch.log)
+	//arch.openFiles[id] = append(arch.openFiles[id], vm)
+	return vm, nil
+}
+
+func (arch *Archiver) OpenVirtualMediaFileForHeaderRecovery(id uint32) (*virtualMedia.VirtualMedia, error) {
+	arch.crudMutex.Lock()
+	defer arch.crudMutex.Unlock()
+	//_, ok := arch.openFiles[id]
+	//if ok {
+	//	return nil, fmt.Errorf("this ID: %v is opened before", id)
+	//}
+	vf, err := arch.fs.OpenVirtualFileForRecovery(id)
+	if err != nil {
+		return nil, err
+	}
+
+	info := &vInfo.Info{}
+
+	vm := virtualMedia.OpenVirtualMedia(vf.GetFileName(), id, arch.blockSize, vf, arch, info, arch.log)
+
 	//arch.openFiles[id] = append(arch.openFiles[id], vm)
 	return vm, nil
 }
