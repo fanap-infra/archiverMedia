@@ -15,6 +15,7 @@ enum PacketType{
     PacketEOF = 4;
     PacketStop = 5;
     PacketWebRTC = 6;
+    PacketReconnectingAlert = 7; // reconnecting alert
 }
 
 message Event {
