@@ -40,13 +40,13 @@ func (vm *VirtualMedia) NextFrameChunk() (*media.PacketChunk, error) {
 				if err != nil {
 					vm.log.Errorv("FrameChunk proto.Unmarshal", "err", err.Error(),
 						"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize,
-						"len(vm.vfBuf)", len(vm.vfBuf))
+						"len(vm.vfBuf)", len(vm.vfBuf), "BLMArray", vm.vFile.GetBLMArray())
 					vm.vfBuf = vm.vfBuf[nextFrameChunk+int(frameChunkDataSize)+FrameChunkIdentifierSize:]
 					errorCounter++
 					if errorCounter > 1 {
 						vm.log.Errorv("can not parse proto file multiple times",
 							"nextFrameChunk", nextFrameChunk, "frameChunkDataSize", frameChunkDataSize,
-							"len(vm.vfBuf)", len(vm.vfBuf))
+							"len(vm.vfBuf)", len(vm.vfBuf), "BLMArray", vm.vFile.GetBLMArray())
 						return nil, err
 					}
 				} else {
