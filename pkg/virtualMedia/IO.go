@@ -52,6 +52,11 @@ func (vm *VirtualMedia) WriteFrame(frame *media.Packet) error {
 	}
 
 	if frame.PacketType == media.PacketType_PacketVideo {
+		if frame.Time < 0 || frame.Time < vm.frameChunk.StartTime {
+			vm.log.Warnv("frame time is wrong", "frame.Time ",frame.Time ,
+				"vm.frameChunk.StartTime",vm.frameChunk.StartTime, "fileID", vm.fileID)
+			return nil
+		}
 		if len(vm.frameChunk.Packets) == 0 && vm.frameChunk.Index == 1 {
 			vm.frameChunk.StartTime = frame.Time
 		}
