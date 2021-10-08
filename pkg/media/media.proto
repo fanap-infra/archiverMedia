@@ -33,7 +33,7 @@ message Packet {
     PacketType PacketType = 1;
     bytes Data = 2;
     int64 compositionTime = 3;
-    uint32 TimeSample = 4;
+    uint64 TimeSample = 4;
     bool IsKeyFrame = 5;
     uint32 crc = 6;
     int64 time = 7;
