@@ -1,11 +1,9 @@
 syntax = "proto3";
 
-//import "google/protobuf/duration.proto";
 
 package media;
 
 option go_package = ".;media";
-//option go_package = "behnama/stream/internal/messages/media";
 
 enum PacketType{
     PacketVideo = 0;
@@ -16,6 +14,7 @@ enum PacketType{
     PacketStop = 5;
     PacketWebRTC = 6;
     PacketReconnectingAlert = 7; // reconnecting alert
+    PacketWaiting = 8; // for receivers time out
 }
 
 message Event {
