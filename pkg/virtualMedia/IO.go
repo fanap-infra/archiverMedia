@@ -170,28 +170,31 @@ func (vm *VirtualMedia) Close() error {
 	defer vm.fwMUX.Unlock()
 	vm.rxMUX.Lock()
 	defer vm.rxMUX.Unlock()
-
-	if len(vm.frameChunk.Packets) > 0 && !vm.readOnly {
-		b, err := generateFrameChunk(vm.frameChunk)
-		if err != nil {
+	if vm.frameChunk != nil {
+		if len(vm.frameChunk.Packets) > 0 && !vm.readOnly {
+			b, err := generateFrameChunk(vm.frameChunk)
+			if err != nil {
 			return err
 		}
-		l, err := vm.vFile.Write(b)
-		vm.fileSize += uint32(l)
-		if err != nil {
+			l, err := vm.vFile.Write(b)
+			vm.fileSize += uint32(l)
+			if err != nil {
 			return err
 		}
-		if vm.frameChunk.Index == 1 {
-			vm.info.StartTime = vm.frameChunk.StartTime
-		}
-		vm.info.EndTime = vm.frameChunk.EndTime
-		err = vm.UpdateFileOptionalData()
-		if err != nil {
+			if vm.frameChunk.Index == 1 {
+				vm.info.StartTime = vm.frameChunk.StartTime
+			}
+			vm.info.EndTime = vm.frameChunk.EndTime
+			err = vm.UpdateFileOptionalData()
+			if err != nil {
 			return err
 		}
 		// vm.log.Infov("packet chunk is written in close", "Index", vm.frameChunk.Index,
 		//	"packets number", len(vm.frameChunk.Packets), "size frame chunk", len(b))
-		vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
+			vm.frameChunk = &media.PacketChunk{Index: vm.frameChunk.Index + 1}
+		}
+	} else {
+		vm.log.Warnv("virtual file close, frameChunk is nill", "id", vm.fileID)
 	}
 	// vm.log.Infov("virtual file closed", "vm.frameChunk.Index", vm.frameChunk.Index,
 	//	"start time", vm.info.StartTime, "end time", vm.info.EndTime)
